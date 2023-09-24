@@ -1,40 +1,111 @@
 <script setup>
 import { ref } from 'vue'
+const transcript = ref('')
+const isRecording = ref(false)
+const text = ref(null)
 
-defineProps({
-  msg: String,
-})
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
-const count = ref(0)
+const sr = new Recognition()
+sr.lang = 'ru-RU'
+
+const request = window.indexedDB.open('TextDB', 1);
+let db
+
+function displayData() {
+  request.onsuccess = () => {
+    db = request.result;
+    const store = db.transaction('Texts').objectStore('Texts');
+    store.getAll().onsuccess = (event) => {
+      text.value = event.target.result
+    }
+  }
+}
+
+createDataStore()
+displayData()
+
+function addData() {
+  const store = db.transaction('Texts', 'readwrite').objectStore('Texts');
+  store.put(transcript.value).onsuccess = () => {
+    text.value.push(transcript.value)
+  }
+}
+
+function createDataStore() {
+  request.onupgradeneeded = () => {
+    db = request.result;
+    if (db.objectStoreNames.length === 0) {
+      db.createObjectStore('Texts', {
+        autoIncrement: true
+      });
+    }
+  }
+}
+
+
+sr.onstart = () => {
+  console.log('SR Started')
+  isRecording.value = true
+}
+
+sr.onresult = (event) => {
+  for (let i = 0; i < event.results.length; i++) {
+    const result = event.results[i]
+    if (result.isFinal) CheckForCommand(result)
+  }
+  transcript.value = event.results[0][0].transcript
+  addData()
+}
+
+sr.onend = () => {
+  console.log('SR Stopped')
+  isRecording.value = false
+}
+
+const CheckForCommand = (result) => {
+  const t = result[0].transcript;
+  if (t.includes('stop recording')) {
+    sr.stop()
+  } else if (
+    t.includes('what is the time') ||
+    t.includes('what\'s the time')
+  ) {
+    sr.stop()
+    alert(new Date().toLocaleTimeString())
+    setTimeout(() => sr.start(), 100)
+  }
+}
+
+const ToggleMic = () => {
+  if (isRecording.value) {
+    sr.stop()
+  } else {
+    sr.start()
+  }
+}
+
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+  <div class="app">
+    <button :class="`mic`" @click="ToggleMic">Record</button>
+    <div v-for="(t, index) in text" :key="index">{{ t }}</div>
+    <div>transcript: {{ transcript }}</div>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Install
-    <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
-    in your IDE for a better DX
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fira sans', sans-serif;
+}
+
+body {
+  background: #281936;
+  color: #FFF;
 }
 </style>
+
