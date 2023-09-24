@@ -7,6 +7,21 @@ export default defineConfig({
   base: "/test/",
   plugins: [
     vue(),
-    VitePWA()
+    VitePWA({
+      manifest: {
+        icons: [
+          {
+            src: '/icons/stt_64.png',
+            sizes: '64x64',
+            type: 'image/png'
+          },
+          {
+            src: '/icons/stt_144.png',
+            sizes: '144x144',
+            type: 'image/png'
+          },
+        ]
+      }
+    })
   ],
 })
