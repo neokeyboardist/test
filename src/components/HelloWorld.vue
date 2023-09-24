@@ -93,6 +93,7 @@ const ToggleMic = () => {
     <div v-for="(t, index) in text" :key="index">{{ t }}</div>
     <div>transcript: {{ transcript }}</div>
     <div>db: {{ db }}</div>
+    <div>text: {{ text }}</div>
   </div>
 </template>
 
