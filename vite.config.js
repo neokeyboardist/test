@@ -11,12 +11,12 @@ export default defineConfig({
       manifest: {
         icons: [
           {
-            src: '/icons/stt_64.png',
+            src: './icons/stt_64.png',
             sizes: '64x64',
             type: 'image/png'
           },
           {
-            src: '/icons/stt_144.png',
+            src: './icons/stt_144.png',
             sizes: '144x144',
             type: 'image/png'
           },
