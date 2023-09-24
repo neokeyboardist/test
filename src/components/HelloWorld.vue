@@ -92,6 +92,7 @@ const ToggleMic = () => {
     <button :class="`mic`" @click="ToggleMic">Record</button>
     <div v-for="(t, index) in text" :key="index">{{ t }}</div>
     <div>transcript: {{ transcript }}</div>
+    <div>db: {{ db }}</div>
   </div>
 </template>
 
