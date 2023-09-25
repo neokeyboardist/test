@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 const transcript = ref('')
-const isRecording = ref(false)
+// const isRecording = ref(false)
 const text = ref(null)
 
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -46,7 +46,7 @@ function createDataStore() {
 
 sr.onstart = () => {
   console.log('SR Started')
-  isRecording.value = true
+  // isRecording.value = true
 }
 
 sr.onresult = (event) => {
@@ -60,7 +60,7 @@ sr.onresult = (event) => {
 
 sr.onend = () => {
   console.log('SR Stopped')
-  isRecording.value = false
+  // isRecording.value = false
 }
 
 const CheckForCommand = (result) => {
@@ -77,19 +77,22 @@ const CheckForCommand = (result) => {
   }
 }
 
-const ToggleMic = () => {
-  if (isRecording.value) {
-    sr.stop()
-  } else {
-    sr.start()
-  }
-}
+const ToggleMic = () => sr.start()
+
+// const ToggleMic = () => {
+//   if (isRecording.value) {
+//     sr.stop()
+//   } else {
+//     sr.start()
+//   }
+// }
 
 </script>
 
 <template>
   <div class="app">
     <button :class="`mic`" @click="ToggleMic">Record</button>
+    <!-- <button :class="`mic`" @click="ToggleMic">Record</button> -->
     <div v-for="(t, index) in text" :key="index">{{ t }}</div>
     <div>transcript: {{ transcript }}</div>
     <div>db: {{ db }}</div>
