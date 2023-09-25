@@ -9,6 +9,7 @@ const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const sr = new Recognition()
 sr.lang = 'ru-RU'
 
+
 const request = window.indexedDB.open('TextDB', 1);
 let db
 
@@ -52,7 +53,7 @@ sr.onstart = () => {
 sr.onresult = (event) => {
   for (let i = 0; i < event.results.length; i++) {
     const result = event.results[i]
-    if (result.isFinal) CheckForCommand(result)
+    // if (result.isFinal) CheckForCommand(result)
   }
   transcript.value = event.results[0][0].transcript
   addData()
