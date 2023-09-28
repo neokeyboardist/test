@@ -59,6 +59,9 @@ sr.onresult = (event) => {
   }
   transcript.value = event.results[0][0].transcript
   addData()
+  setTimeout(() => {
+    sr.start();
+  }, 50);
 }
 
 sr.onend = () => {
