@@ -61,7 +61,7 @@ sr.onresult = (event) => {
   addData()
   setTimeout(() => {
     sr.start();
-  }, 50);
+  }, 100);
 }
 
 sr.onend = () => {
