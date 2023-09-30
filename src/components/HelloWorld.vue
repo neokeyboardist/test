@@ -65,7 +65,6 @@ sr.onresult = (event) => {
 }
 
 sr.onend = () => {
-  sr.start();
   console.log('SR Stopped')
   // isRecording.value = false
 }
