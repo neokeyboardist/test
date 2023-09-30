@@ -8,7 +8,7 @@ const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
 const sr = new Recognition()
 sr.lang = 'ru-RU'
-sr.continuous = true
+sr.continuous = false
 console.log('sr', sr);
 
 
@@ -59,12 +59,13 @@ sr.onresult = (event) => {
   }
   transcript.value = event.results[0][0].transcript
   addData()
-  setTimeout(() => {
-    sr.start();
-  }, 100);
+  // setTimeout(() => {
+  //   sr.start();
+  // }, 100);
 }
 
 sr.onend = () => {
+  sr.start();
   console.log('SR Stopped')
   // isRecording.value = false
 }
