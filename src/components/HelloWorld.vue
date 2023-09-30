@@ -4,7 +4,7 @@ const transcript = ref('')
 // const isRecording = ref(false)
 const text = ref(null)
 
-const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const Recognition = window.webkitSpeechRecognition || window.SpeechRecognition
 
 const sr = new Recognition()
 sr.lang = 'ru-RU'
