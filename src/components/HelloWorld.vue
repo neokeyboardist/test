@@ -8,7 +8,7 @@ const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
 const sr = new Recognition()
 sr.lang = 'ru-RU'
-sr.continuous = false
+sr.continuous = true
 console.log('sr', sr);
 
 
